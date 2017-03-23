@@ -11,7 +11,7 @@
 
 
 \definecolor{Green}{HTML}{00e5ba}
-\definecolor{GreenLight}{HTML}{33ffed}
+\definecolor{GreenLight}{HTML}{e4f6f2}
 \definecolor{Grey}{HTML}{555555}
 \definecolor{GreyLight}{HTML}{f5f5f5}
 
@@ -21,7 +21,7 @@
 \setbeamercolor*{item}{fg=Green}
 \setbeamercolor*{frametitle}{fg=Grey}
 \setbeamercolor*{block title}{fg=white, bg=Green}
-\setbeamercolor*{block title example}{fg=white, bg=GreenLight}
+\setbeamercolor*{block body}{fg=Grey, bg=GreenLight}
 \setbeamercolor*{section in toc}{fg=black}
 \setbeamercolor*{section page}{fg=white}
 
@@ -97,5 +97,7 @@
 	\vspace{0.3cm}
 	\begin{beamercolorbox}{frametitle}
 		\insertframetitle
+		\hspace{0.1cm}
+		\small\insertframesubtitle
 	\end{beamercolorbox}
 }
