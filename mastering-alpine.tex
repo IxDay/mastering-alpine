@@ -1,0 +1,45 @@
+\documentclass{beamer}
+
+\usepackage{xcolor}
+\definecolor{blue}{HTML}{0049FF}
+\definecolor{green}{HTML}{00E5BA}
+
+\definecolor{title}{HTML}{000000}
+
+
+\definecolor{black}{HTML}{555555}
+
+
+
+\usepackage{fontspec}
+\usefonttheme{serif}
+\setmainfont{Lato Regular}
+
+\newfontfamily\headingfont[Scale=1.4]{Oswald Regular}
+
+\setbeamertemplate{frametitle}{
+	\begin{flushright}
+		\color{title}
+		\headingfont{\insertframetitle} \\
+		\small{\insertframesubtitle}
+
+	\end{flushright}
+}
+
+\setbeamersize{sidebar width left=0.5cm,sidebar width right=0.5cm}{
+	\usebeamercolor{sidebar}
+}
+\setbeamertemplate{sidebar canvas left}[horizontal shading][left=blue,middle=sidebar.bg,right=white]
+
+\title{Mastering Alpine}
+\author{Maxime Vidori, software engineer @Container Solutions}
+\date{\today}
+
+\begin{document}
+\frame{\titlepage}
+\begin{frame}{Alpine? Never heard of it...}
+
+This is a text in first frame. This is a text in first frame. This is a text in first frame.
+\end{frame}
+
+\end{document}
