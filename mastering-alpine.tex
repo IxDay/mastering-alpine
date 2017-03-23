@@ -1,45 +1,36 @@
 \documentclass{beamer}
-
-\usepackage{xcolor}
-\definecolor{blue}{HTML}{0049FF}
-\definecolor{green}{HTML}{00E5BA}
-
-\definecolor{title}{HTML}{000000}
-
-
-\definecolor{black}{HTML}{555555}
-
-
-
-\usepackage{fontspec}
-\usefonttheme{serif}
-\setmainfont{Lato Regular}
-
-\newfontfamily\headingfont[Scale=1.4]{Oswald Regular}
-
-\setbeamertemplate{frametitle}{
-	\begin{flushright}
-		\color{title}
-		\headingfont{\insertframetitle} \\
-		\small{\insertframesubtitle}
-
-	\end{flushright}
-}
-
-\setbeamersize{sidebar width left=0.5cm,sidebar width right=0.5cm}{
-	\usebeamercolor{sidebar}
-}
-\setbeamertemplate{sidebar canvas left}[horizontal shading][left=blue,middle=sidebar.bg,right=white]
-
-\title{Mastering Alpine}
-\author{Maxime Vidori, software engineer @Container Solutions}
+\title{Mastering Alpine Linux}
 \date{\today}
+\author{Maxime Vidori}
+
+\usetheme{Perso}
 
 \begin{document}
-\frame{\titlepage}
-\begin{frame}{Alpine? Never heard of it...}
 
-This is a text in first frame. This is a text in first frame. This is a text in first frame.
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+\begin{frame}
+\frametitle{There Is No Largest Prime Number}
+\framesubtitle{The proof uses \textit{reductio ad absurdum}.}
+\begin{theorem}
+There is no largest prime number. \end{theorem}
+\begin{itemize}
+\item<1-> Suppose $p$ were the largest prime number.
+\item<2-> Let $q$ be the product of the first $p$ numbers.
+\item<3-> Then $q+1$ is not divisible by any of them.
+\item<1-> But $q + 1$ is greater than $1$, thus divisible by some prime
+number not in the first $p$ numbers.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{A longer title}
+\begin{itemize}
+\item one
+\item two
+\end{itemize}
 \end{frame}
 
 \end{document}

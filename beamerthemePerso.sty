@@ -1,0 +1,101 @@
+\RequirePackage{tikz, datetime, textpos, fontspec}
+
+\usefonttheme{serif}
+\setmainfont{Lato Regular}
+
+\newfontfamily\headingfont[Scale=1.4]{Oswald Regular}
+\newfontfamily\headingboldfont[Scale=1.4]{Oswald Bold}
+
+\ProcessOptions
+\yyyymmdddate \renewcommand{\dateseparator}{.}
+
+
+\definecolor{Green}{HTML}{00e5ba}
+\definecolor{GreenLight}{HTML}{33ffed}
+\definecolor{Grey}{HTML}{555555}
+\definecolor{GreyLight}{HTML}{f5f5f5}
+
+
+\setbeamercolor*{frame}{bg=GreyLight}
+\setbeamercolor*{title}{fg=Grey}
+\setbeamercolor*{item}{fg=Green}
+\setbeamercolor*{frametitle}{fg=Grey}
+\setbeamercolor*{block title}{fg=white, bg=Green}
+\setbeamercolor*{block title example}{fg=white, bg=GreenLight}
+\setbeamercolor*{section in toc}{fg=black}
+\setbeamercolor*{section page}{fg=white}
+
+\setbeamerfont{section page}{size=\LARGE}
+\setbeamerfont{frametitle}{family=\headingfont}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{items}[square]
+\setbeamertemplate{itemize item}{\tikz{\draw[color=Green, semithick] rectangle(.2,.2);}}
+\setbeamertemplate{itemize subitem}{\tikz{\draw[color=Grey, ultra thick] rectangle(.2,.2);}}
+\setbeamertemplate{sections/subsections in toc}[square]
+
+\newenvironment{xplainframe}{
+    \bgroup\setbeamertemplate{background}{}
+    \begin{frame}[plain]
+}{
+    \end{frame}
+    \egroup
+}
+
+\setbeamertemplate{background}{
+  \begin{tikzpicture}
+  \useasboundingbox (0,0) rectangle(\the\paperwidth,\the\paperheight);
+  \ifnum\thepage>1\relax% Not the title page
+	    \fill[color=Green] (0,8.3) rectangle(0.8,8.4);
+	    \fill[color=Grey] (0.9,8.3) rectangle(\the\paperwidth, 8.4);
+  \else% Title page
+        \fill[color=Green] (0,5.7) rectangle(0.8,5.8);
+	    \fill[color=Grey] (0.9,5.7) rectangle(\the\paperwidth,5.8);
+  \fi
+  \end{tikzpicture}
+}
+\setbeamertemplate{title page}{
+    \headingfont\small
+	\begin{textblock*}{12cm}(0cm,-0.9cm)
+    \begin{beamercolorbox}[wd=8cm]{title}
+      \LARGE\inserttitle%
+    \end{beamercolorbox}%
+    \end{textblock*}
+    \begin{textblock*}{9cm}(0cm,0cm)
+        \begin{beamercolorbox}{title}
+            \begin{flushleft}
+                \insertdate
+            \end{flushleft}
+        \end{beamercolorbox}
+    \end{textblock*}
+    \begin{textblock*}{9cm}(2.5cm,0cm)
+		\begin{beamercolorbox}{title}
+            \begin{flushright}
+                \insertauthor%
+            \end{flushright}
+	    \end{beamercolorbox}
+    \end{textblock*}
+}
+\newcommand{\sectionframe}{{
+	\setbeamertemplate{background}{
+		\begin{tikzpicture}
+			\useasboundingbox (0,0) rectangle(\the\paperwidth,\the\paperheight);
+			\fill[color=Green] (0,6) rectangle (1.5, 7);
+			\fill[color=Grey] (1.6, 6) rectangle (\the\paperwidth, 7);
+		\end{tikzpicture}
+	}
+	\frame{\sectionpage}
+}}
+\setbeamertemplate{section page}{
+	\begin{textblock*}{12cm}(0.8cm,-0.9cm)
+		\begin{beamercolorbox}{section page}
+			\insertsectionhead
+		\end{beamercolorbox}
+	\end{textblock*}
+}
+\setbeamertemplate{frametitle}{
+	\vspace{0.3cm}
+	\begin{beamercolorbox}{frametitle}
+		\insertframetitle
+	\end{beamercolorbox}
+}
