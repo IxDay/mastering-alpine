@@ -1,36 +1,118 @@
 \documentclass{beamer}
+
+\usepackage{textcomp}
+\usetheme{Perso}
+
+\usepackage[outputdir=build]{minted}
+\setminted{breaklines}
+\newminted{text}{frame=single}
+\usemintedstyle{tango}
+
 \title{Mastering Alpine Linux}
 \date{\today}
 \author{Maxime Vidori}
 
-\usetheme{Perso}
-
 \begin{document}
 
 \begin{frame}
-\titlepage
+  \titlepage
 \end{frame}
 
 
 \begin{frame}
-\frametitle{There Is No Largest Prime Number}
-\framesubtitle{The proof uses \textit{reductio ad absurdum}.}
-\begin{theorem}
-There is no largest prime number. \end{theorem}
-\begin{itemize}
-\item<1-> Suppose $p$ were the largest prime number.
-\item<2-> Let $q$ be the product of the first $p$ numbers.
-\item<3-> Then $q+1$ is not divisible by any of them.
-\item<1-> But $q + 1$ is greater than $1$, thus divisible by some prime
-number not in the first $p$ numbers.
-\end{itemize}
+  \frametitle{Alpine?}
+  \framesubtitle{Never heard of it...}
+  By the way, what is alpine
+  \begin{itemize}
+    \item ligthview distrib based on busybox and musl-libc
+    \item can be used as a distribution and come with a grsec kernel
+    \item usefull for container building, provides tooling
+      (package manager, supported by docker) and small footprint
+  \end{itemize}
 \end{frame}
 
-\begin{frame}{A longer title}
-\begin{itemize}
-\item one
-\item two
-\end{itemize}
+\begin{frame}
+  \frametitle{Alpine?}
+  \framesubtitle{Never heard of it...}
+  Musl libc
+  \begin{itemize}
+    \item foo bar
+  \end{itemize}
+  Busybox
+  \begin{itemize}
+    \item foo bar
+  \end{itemize}
 \end{frame}
 
+\begin{frame}{Why using it?}
+  Masterize your toolchain, avoid using third party unknown containers
+\end{frame}
+
+\begin{frame}{Why using it?}
+  Can create small containers, 15-20MB for a binary one is common,
+    ~50MB for a python one
+\end{frame}
+
+\begin{frame}{When not using it}
+  Based on musl-libc -> limitations here (some package do not compile)
+\end{frame}
+
+\begin{frame}{When not using it}
+  When building big images the small footprint is no longer an advantage
+    (cross compiler can be really huge)
+\end{frame}
+
+\begin{frame}{When not using it}
+  package library is not exhaustive (10G big), this is not a debian distrib
+    if a lot of dependencies are involved do not use it
+\end{frame}
+\begin{frame}{Tooling}{Build your binary}
+ It is all about tooling
+
+  You can dockerize everything,
+  Get boring tools, we need a good ecosystem
+
+  Virtual packages
+  apk add -t
+\end{frame}
+
+
+\begin{frame}{Tooling}{Build your binary}
+  Bring only your binary$\,\to\,$reduce the size of your image
+
+\end{frame}
+
+\begin{frame}[fragile]
+  \frametitle{Tooling}
+  \framesubtitle{Build a mirror}
+
+  \begin{exampleblock}{Murphy's law}
+    \vskip2mm
+    Anything that can go wrong will go wrong.
+    \vskip2mm
+  \end{exampleblock}
+
+    \begin{itemize}
+    \item small footprint (\char`~5G)
+    \item rapid builds, offline builds
+    \item push your custom package
+  \end{itemize}
+
+  \begin{minted}{shell}
+REPO_URL="rsync://mirror.url/alpine/v3.5/main/x86_64"
+
+/usr/bin/rsync ${rsync_opts} ${REPO_URL} /tmp/alpine
+/usr/bin/darkhttpd --port 8000 /tmp/alpine
+  \end{minted}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Tooling}
+  \framesubtitle{Build a package}
+
+\end{frame}
+
+\begin{frame}{Tooling}
+  Build a package
+\end{frame}
 \end{document}
