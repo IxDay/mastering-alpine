@@ -22,7 +22,7 @@
   \framesubtitle{Never heard of it...}
   What's in the box?
   \begin{itemize}
-    \item \textbf{provide a package manager and a small footprint}.
+    \item \textbf{provide a package manager and a small footprint} (v3.5 \char`~4MB).
     \item based on busybox and musl-libc.
     \item can be used as a distribution and come with a grsec kernel.
   \end{itemize}
@@ -31,25 +31,39 @@
     \item easier to understand and deploy.
     \item force you to investigate time in your system, and production
       environment.
-    \item reduce security risks by mastering your toolchain, \textbf{no more third party unknown containers!}
+    \item reduce security risks by mastering your toolchain,
+      \textbf{no more third party unknown containers!}
   \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Alpine?}
-  \framesubtitle{Never heard of it...}
-  Musl libc
+  \framesubtitle{musl libc}
+  \begin{exampleblock}{musl}
+    \vskip2mm
+    \textit{lightweight, fast, simple, free,} and strives to be
+    \textit{correct} in the sense of standards-conformance and safety.
+    \vskip2mm
+    \end{exampleblock}
   \begin{itemize}
-    \item foo bar
+    \item replacement for the \textbf{glibc}, works most of the time.
+    \item \textbf{\char`~600KB} vs \textbf{\char`~8MB} for complete .so set.
+    \item some softwares will not compile (I am looking at you \textbf{systemd}).
+    \item you can still install it but this is crappy and not
+      recommended outside a chroot (see the documentation).
   \end{itemize}
-  Busybox
+\end{frame}
+
+\begin{frame}
+  \frametitle{Alpine?}
+  \framesubtitle{busybox}
   \begin{itemize}
     \item foo bar
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Why using it?}
-  Masterize your toolchain, avoid using third party unknown containers
+    Masterize your toolchain, avoid using third party unknown containers
 \end{frame}
 
 \begin{frame}{Why using it?}
@@ -85,7 +99,8 @@
   \frametitle{Tooling}
   \framesubtitle{Build your binary}
   virtual package switch:  \mintinline{shell}{apk add -t virtual} \\
-  build container \textbf{\char`~200MB}$\,\to\,$prod container \textbf{\char`~11MB}
+  build container \textbf{\char`~200MB}$\,\to\,$prod container
+  \textbf{\char`~11MB}
 
   \begin{minted}{docker}
 FROM alpine:3.4
