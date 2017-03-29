@@ -23,15 +23,15 @@
   What's in the box?
   \begin{itemize}
     \item \textbf{provide a package manager and a small footprint} (v3.5 \char`~4MB).
-    \item based on busybox and musl-libc.
-    \item can be used as a distribution and come with a grsec kernel.
+    \item Based on busybox and musl-libc.
+    \item Can be used as a distribution and come with a grsec kernel.
   \end{itemize}
   How can this helps me?
   \begin{itemize}
-    \item easier to understand and deploy.
-    \item force you to investigate time in your system, and production
+    \item Easier to understand and deploy.
+    \item Force you to investigate time in your system, and production
       environment.
-    \item reduce security risks by mastering your toolchain,
+    \item Reduce security risks by mastering your toolchain,
       \textbf{no more third party unknown containers!}
   \end{itemize}
 \end{frame}
@@ -39,17 +39,15 @@
 \begin{frame}
   \frametitle{Alpine?}
   \framesubtitle{musl libc}
-  \begin{exampleblock}{musl}
-    \vskip2mm
+  \begin{block}{musl}
     \textit{lightweight, fast, simple, free,} and strives to be
     \textit{correct} in the sense of standards-conformance and safety.
-    \vskip2mm
-    \end{exampleblock}
+    \end{block}
   \begin{itemize}
-    \item replacement for the \textbf{glibc}, works most of the time.
+    \item Replacement for the \textbf{glibc}, works most of the time.
     \item \textbf{\char`~600KB} vs \textbf{\char`~8MB} for complete .so set.
-    \item some softwares will not compile (I am looking at you \textbf{systemd}).
-    \item you can still install it but this is crappy and not
+    \item Some softwares will not compile (I am looking at you \textbf{systemd}).
+  \item You can still install it, but this is crappy and not
       recommended outside a chroot (see the documentation).
   \end{itemize}
 \end{frame}
@@ -127,9 +125,9 @@ CMD ["/usr/local/bin/hello"]
   \end{exampleblock}
 
     \begin{itemize}
-    \item small footprint (\char`~5G)
-    \item rapid builds, offline builds
-    \item push your custom package
+      \item Small footprint (\char`~5G)
+      \item Rapid builds, offline builds
+      \item Push your custom package
   \end{itemize}
 
   \begin{minted}{shell}
