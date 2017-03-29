@@ -1,6 +1,4 @@
 \documentclass{beamer}
-
-\usepackage{textcomp}
 \usetheme{Perso}
 
 \usepackage[outputdir=build]{minted}
@@ -22,12 +20,18 @@
 \begin{frame}
   \frametitle{Alpine?}
   \framesubtitle{Never heard of it...}
-  By the way, what is alpine
+  What's in the box?
   \begin{itemize}
-    \item ligthview distrib based on busybox and musl-libc
-    \item can be used as a distribution and come with a grsec kernel
-    \item usefull for container building, provides tooling
-      (package manager, supported by docker) and small footprint
+    \item \textbf{provide a package manager and a small footprint}.
+    \item based on busybox and musl-libc.
+    \item can be used as a distribution and come with a grsec kernel.
+  \end{itemize}
+  How can this helps me?
+  \begin{itemize}
+    \item easier to understand and deploy.
+    \item force you to investigate time in your system, and production
+      environment.
+    \item reduce security risks by mastering your toolchain, \textbf{no more third party unknown containers!}
   \end{itemize}
 \end{frame}
 
@@ -66,25 +70,40 @@
   package library is not exhaustive (10G big), this is not a debian distrib
     if a lot of dependencies are involved do not use it
 \end{frame}
-\begin{frame}{Tooling}{Build your binary}
- It is all about tooling
-
-  You can dockerize everything,
-  Get boring tools, we need a good ecosystem
-
-  Virtual packages
-  apk add -t
+\begin{frame}{Tooling}{}
+  \begin{itemize}
+    \item Busybox does not provide a package manager.
+    \item Debian repo is more than \textbf{200G}, packaging is hard and can become messy.
+    \item
+  \end{itemize}
+  Let's build a pipeline around this to speed up our workflow.
+  \flushright{\LARGE \textbf{It's all about tooling!}}
 \end{frame}
 
 
-\begin{frame}{Tooling}{Build your binary}
-  Bring only your binary$\,\to\,$reduce the size of your image
+\begin{frame}[fragile]
+  \frametitle{Tooling}
+  \framesubtitle{Build your binary}
+  virtual package switch:  \mintinline{shell}{apk add -t virtual} \\
+  build container \textbf{\char`~200MB}$\,\to\,$prod container \textbf{\char`~11MB}
 
+  \begin{minted}{docker}
+FROM alpine:3.4
+
+ENV REPO "https://raw.githubusercontent.com/.../hello.go"
+RUN apk add --no-cache -t build-dependencies go curl \
+  && curl -o /tmp/hello.go "$REPO" \
+  && go build -ldflags '-w -s' -o /usr/local/bin/hello /tmp/hello.go \
+  && rm /tmp/hello.go \
+  && apk del build-dependencies
+
+CMD ["/usr/local/bin/hello"]
+  \end{minted}
 \end{frame}
 
 \begin{frame}[fragile]
   \frametitle{Tooling}
-  \framesubtitle{Build a mirror}
+  \framesubtitle{Build your mirror}
 
   \begin{exampleblock}{Murphy's law}
     \vskip2mm
@@ -99,7 +118,7 @@
   \end{itemize}
 
   \begin{minted}{shell}
-REPO_URL="rsync://mirror.url/alpine/v3.5/main/x86_64"
+REPO_URL="rsync://${mirror}/alpine/v3.4/main/x86_64"
 
 /usr/bin/rsync ${rsync_opts} ${REPO_URL} /tmp/alpine
 /usr/bin/darkhttpd --port 8000 /tmp/alpine
@@ -108,7 +127,7 @@ REPO_URL="rsync://mirror.url/alpine/v3.5/main/x86_64"
 
 \begin{frame}
   \frametitle{Tooling}
-  \framesubtitle{Build a package}
+  \framesubtitle{Build your package}
 
 \end{frame}
 
