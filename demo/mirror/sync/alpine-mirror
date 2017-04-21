@@ -11,13 +11,15 @@ dest=/data/
 
 mkdir -p "$dest"
 /usr/bin/rsync \
-		--verbose \
-        --archive \
-        --update \
-        --hard-links \
-        --delete \
-        --delete-after \
-        --delay-updates \
-        --timeout=600 \
-        $exclude \
-        "$src" "$dest"
+	--chmod=ugo+rwX \
+	--verbose \
+	--archive \
+	--update \
+	--hard-links \
+	--delete \
+	--human-readable \
+	--delete-after \
+	--delay-updates \
+	--timeout=600 \
+	$exclude \
+	"$src" "$dest"
