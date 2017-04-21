@@ -1,0 +1,13 @@
+version: '2'
+services:
+  sync:
+    build:
+      context: ./mirror/sync
+    volumes:
+     - /data
+  server:
+    build:
+      context: ./mirror/serve
+    volumes_from:
+      - sync
+    command: /data
