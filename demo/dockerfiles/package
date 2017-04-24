@@ -1,0 +1,14 @@
+FROM alpine:base
+
+ARG UID
+
+RUN apk add --update alpine-sdk \
+  && adduser -G abuild -u ${UID} -g "Alpine Package Builder" -s /bin/sh -D builder \
+  && echo "builder ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+WORKDIR /tmp
+COPY assets/APKBUILD .
+RUN chown builder:abuild -R .
+
+USER builder
+CMD /usr/bin/abuild -r -P /data

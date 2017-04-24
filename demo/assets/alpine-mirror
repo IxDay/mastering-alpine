@@ -7,7 +7,7 @@ if [ -z "$flock" ] ; then
 fi
 
 src="$ALPINE_REPO"
-dest=/data/
+dest="$REPO"
 
 mkdir -p "$dest"
 /usr/bin/rsync \

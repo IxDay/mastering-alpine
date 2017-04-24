@@ -1,0 +1,10 @@
+FROM alpine:3.4
+
+WORKDIR /tmp
+COPY assets/hello.go .
+RUN apk add --no-cache -t build-dependencies go \
+	&& go build -ldflags '-w -s' -o /usr/local/bin/hello hello.go \
+	&& rm hello.go \
+	&& apk del build-dependencies
+
+CMD ["/usr/local/bin/hello"]

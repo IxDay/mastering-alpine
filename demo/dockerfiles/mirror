@@ -1,0 +1,8 @@
+FROM alpine:3.5
+
+RUN apk --update add rsync dumb-init
+
+ENV ALPINE_REPO "rsync://mirror.de.leaseweb.net/alpine/v3.5/main/x86_64"
+COPY assets/alpine-mirror /etc/periodic/hourly/alpine-mirror
+
+CMD /etc/periodic/hourly/alpine-mirror && dumb-init -- crond -f -l 0

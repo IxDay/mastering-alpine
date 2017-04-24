@@ -1,0 +1,7 @@
+FROM alpine:3.4
+
+WORKDIR /tmp
+COPY assets/hello.go .
+RUN apk add --update go && go build -o /usr/local/bin/hello hello.go
+
+CMD ["/usr/local/bin/hello"]

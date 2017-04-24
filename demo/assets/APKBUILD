@@ -1,0 +1,29 @@
+# Contributor:
+# Maintainer: IxDay <maxime.vidori@gmail.com>
+pkgname=hello
+pkgver=1.0.0
+pkgrel=0
+pkgdesc="Simple HelloWorld webserver for alpine presentation"
+url="https://github.com/IxDay/mastering-alpine"
+arch="all"
+license="MIT"
+depends=""
+makedepends="go"
+install=""
+subpackages=""
+source="https://github.com/IxDay/mastering-alpine/releases/download/1.0/hello.tgz"
+builddir="$srcdir/"
+
+build() {
+        cd "$builddir"
+        go build -o hello || return 1
+}
+
+package() {
+        cd "$builddir"
+		install -Dm755 "${pkgname}" "$pkgdir/usr/bin/${pkgname}"
+}
+
+md5sums="69ded573a8d76d8712270b7b6c7000b3  hello.tgz"
+sha256sums="3ed3e56669e525d68a2861ce00f890f585f2390212af457b06a3682354eabab3  hello.tgz"
+sha512sums="66e7decddaa894ca637aebf6e1c53f4576dadf1593fefa04f4f20ee74ae7b48006c836817d3dc9f7d058ea7c878079fe33209166ff80cef8e7ad500697a66130  hello.tgz"

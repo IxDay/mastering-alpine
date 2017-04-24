@@ -1,13 +1,64 @@
 version: '2'
 services:
-  sync:
+  full:
+    image: alpine:full
     build:
-      context: ./mirror/sync
+      context: .
+      dockerfile: dockerfiles/full
+  binary:
+    image: alpine:binary
+    build:
+      context: .
+      dockerfile: dockerfiles/binary
+  mirror:
+    container_name: mirror
+    image: alpine:mirror
+    build:
+      context: .
+      dockerfile: dockerfiles/mirror
+    environment:
+      REPO: ${REPO}
     volumes:
-     - /data
+     - ${REPO}
   server:
+    image: alpine:server
+    container_name: server
+    ports:
+      - "${REPO_PORT}:80"
     build:
-      context: ./mirror/serve
+      context: .
+      dockerfile: dockerfiles/server
     volumes_from:
-      - sync
-    command: /data
+      - mirror
+    command: ${REPO}
+  base:
+    image: alpine:base
+    build:
+      context: .
+      dockerfile: dockerfiles/base
+      args:
+        - PUBKEY=${PUBKEY}
+        - REPO_PORT=${REPO_PORT}
+  package:
+    container_name: package
+    image: alpine:package
+    build:
+      context: .
+      dockerfile: dockerfiles/package
+      args:
+        - UID=${UID}
+    volumes_from:
+      - mirror
+    volumes:
+      - ./assets/keys:/tmp/keys
+    environment:
+      PACKAGER_PRIVKEY: /tmp/keys/${PRIVKEY}
+  hello:
+    container_name: hello
+    image: alpine:hello
+    build:
+      context: .
+      dockerfile: dockerfiles/hello
+    ports:
+      - "8081:8080"
+
