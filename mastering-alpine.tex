@@ -28,7 +28,7 @@
   How can this helps me?
   \begin{itemize}
     \item Easier to understand and deploy.
-    \item Force you to investigate time in your system, and production
+    \item Force you to invest time in your system, and production
       environment.
     \item Reduce security risks by mastering your toolchain,
       \textbf{no more third party unknown containers!}
@@ -62,33 +62,26 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Why using it?}
-    Masterize your toolchain, avoid using third party unknown containers
-  Can create small containers, 15-20MB for a binary one is common,
-    ~50MB for a python one
+\begin{frame}
+    \LARGE APK!
 \end{frame}
 
-\begin{frame}{When not using it}
+\begin{frame}{When not to use it}
   \begin{itemize}
     \item The use of \textit{musl-libc} as the core library can cause some
       dependencies to not build.
     \item When building big images the small footprint is no longer an advantage
       (cross compiler can be really huge).
-    \item Package library is not exhaustive (10G big),
+    \item Package library is not exhaustive (10GB big),
       this is not a debian distribution,
       if a lot of dependencies are involved do not use it.
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Tooling}
-  \includegraphics[height=75mm]{compiling}
-  \centering
-\end{frame}
-
 \begin{frame}{Tooling}{}
   \begin{itemize}
     \item Busybox does not provide a package manager.
-    \item Debian repo is more than \textbf{200G}, packaging is hard and can become messy.
+    \item Debian repo is more than \textbf{200GB}, packaging is hard and can become messy.
     \item We need simplicity and documentation, to create infrastructure.
   \end{itemize}
   Let's build a pipeline around this to speed up our workflow.
@@ -103,15 +96,10 @@
 
   \begin{minted}{docker}
 FROM alpine:3.4
-
-ENV REPO "https://raw.githubusercontent.com/.../hello.go"
-RUN apk add --no-cache -t build-dependencies go curl \
-  && curl -o /tmp/hello.go "$REPO" \
-  && go build -ldflags '-w -s' -o /usr/local/bin/hello /tmp/hello.go \
-  && rm /tmp/hello.go \
+RUN apk add --no-cache -t build-dependencies git... \
+  && git clone ... \
+  && go build -ldflags '-w -s' ... \
   && apk del build-dependencies
-
-CMD ["/usr/local/bin/hello"]
   \end{minted}
 \end{frame}
 
@@ -122,17 +110,12 @@ CMD ["/usr/local/bin/hello"]
   \end{block}
 
     \begin{itemize}
-      \item Small footprint (\char`~5G)
+      \item Small footprint (\char`~5GB)
       \item Rapid builds, offline builds
       \item Push your custom package
   \end{itemize}
 
-  \begin{minted}{shell}
-REPO_URL="rsync://${mirror}/alpine/v3.4/main/x86_64"
-
-/usr/bin/rsync ${rsync_opts} ${REPO_URL} /tmp/alpine
-/usr/bin/darkhttpd --port 8000 /tmp/alpine
-  \end{minted}
+  Also easy to setup, just rsync the http repo and serve it through darkhttpd!
 \end{frame}
 
 \begin{frame}[fragile]{Tooling}{Build your package}
@@ -140,13 +123,9 @@ REPO_URL="rsync://${mirror}/alpine/v3.4/main/x86_64"
   \flushright{\textbf{(no, you won't!)}}
   \\
   \begin{itemize}
-    \item \textbf{abuild-keygen} generate keys. The public key has to be
-      installed and shared across containers.
-    \item \textbf{APKBUILD} package description file. Contains instructions for
-      the package build. Based on Gentoo Linux ebuilds, an easy way to package
-      is to check Archlinux AUR for examples.
-    \item \textbf{abuild -r -P /your\_repo\_volume} download source, compile,
-      package, push to the specified repo.
+
+    \item Apline package description file is based on Gentoo Linux \textbf{ebuilds},
+      an easy way to package is to check Archlinux AUR for examples.
   \end{itemize}
 \end{frame}
 
@@ -155,11 +134,11 @@ REPO_URL="rsync://${mirror}/alpine/v3.4/main/x86_64"
     \item Build your image \\ \mintinline{text}{docker build -t my-alpine:1.0 .}
       \begin{minted}{docker}
 FROM alpine:3.5
-RUN echo "http://${DOCKER_BRIDGE_IP}:${PORT}" > "/etc/apk/repositories"
-ADD s0m3-h4sh.rsa.pub /etc/apk/keys
+RUN echo "http://${DOCKER_BRIDGE_IP}:8080" > "/etc/apk/repositories"
+ADD repo-key.rsa.pub /etc/apk/keys
       \end{minted}
     \item Start your mirror \\
-      \mintinline{shell}{docker run -p 8080:${PORT} alpine-mirror}
+      \mintinline{shell}{docker run -p "8080:8080" alpine-mirror}
     \item Use your pipeline!
       \begin{minted}{docker}
 FROM my-alpine:1.0
@@ -169,6 +148,10 @@ RUN apk add --no-cache -t dependencies hello ...
   \end{itemize}
   \flushright{Just use \textbf{minikube} or \textbf{compose}!}
 
+\end{frame}
+
+\begin{frame}{Demo!}
+  \LARGE \textbf{... What could possibly go wrong?}
 \end{frame}
 
 \begin{frame}{Conclusion}
@@ -184,6 +167,9 @@ RUN apk add --no-cache -t dependencies hello ...
     \item You don't always need a full pipeline.
     \item Before starting new tools, look at what already exists.
   \end{itemize}
+
+GITHUB!
 \end{frame}
+
 
 \end{document}

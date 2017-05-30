@@ -1,18 +1,18 @@
 version: '2'
 services:
   full:
-    image: alpine:full
+    image: demo/full
     build:
       context: .
       dockerfile: dockerfiles/full
   binary:
-    image: alpine:binary
+    image: demo/binary
     build:
       context: .
       dockerfile: dockerfiles/binary
   mirror:
     container_name: mirror
-    image: alpine:mirror
+    image: demo/mirror
     build:
       context: .
       dockerfile: dockerfiles/mirror
@@ -21,7 +21,7 @@ services:
     volumes:
      - ${REPO}
   server:
-    image: alpine:server
+    image: demo/server
     container_name: server
     ports:
       - "${REPO_PORT}:80"
@@ -32,7 +32,7 @@ services:
       - mirror
     command: ${REPO}
   base:
-    image: alpine:base
+    image: demo/base
     build:
       context: .
       dockerfile: dockerfiles/base
@@ -41,7 +41,7 @@ services:
         - REPO_PORT=${REPO_PORT}
   package:
     container_name: package
-    image: alpine:package
+    image: demo/package
     build:
       context: .
       dockerfile: dockerfiles/package
@@ -55,7 +55,7 @@ services:
       PACKAGER_PRIVKEY: /tmp/keys/${PRIVKEY}
   hello:
     container_name: hello
-    image: alpine:hello
+    image: demo/hello
     build:
       context: .
       dockerfile: dockerfiles/hello

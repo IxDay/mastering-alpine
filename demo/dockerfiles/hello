@@ -1,4 +1,4 @@
-FROM alpine:base
+FROM demo/base
 
 RUN apk --no-cache add hello
 
