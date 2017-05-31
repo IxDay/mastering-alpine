@@ -100,8 +100,8 @@
 \begin{frame}[fragile]{Tooling}{tips and tricks!}
   \begin{itemize}
 \item Start your mirror server\\
-      \mintinline{shell}{docker run -p "8080:8080" alpine-mirror}
-    \item Build your image \\ \mintinline{text}{docker build -t my-alpine:1.0 .}
+      \mintinline{shell}{docker run -p "8080:80" demo/server}
+    \item Build your image \\ \mintinline{text}{docker build -t demo/base:1.0 .}
       \begin{minted}{docker}
 FROM alpine:3.5
 RUN echo "http://bridge.ip:8080" > /etc/apk/repositories
@@ -110,7 +110,7 @@ ADD repo-key.rsa.pub /etc/apk/keys
 
     \item Use your pipeline!
       \begin{minted}{docker}
-FROM my-alpine:1.0
+FROM demo/base:1.0
 RUN apk add --no-cache -t dependencies hello ...
       \end{minted}
 
@@ -126,7 +126,7 @@ RUN apk add --no-cache -t dependencies hello ...
 \begin{frame}{Conclusion}
   \begin{itemize}
     \item When building containers, think size, think network, think build time.
-    \item Be sure that you use the right tools for the right thing.
+    \item Be sure to use the right tools for the right thing.
     \item Before starting new tools, look at what already exists.
   \end{itemize}
 \end{frame}
