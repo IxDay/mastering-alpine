@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[aspectratio=169]{beamer}
 \usetheme{Perso}
 
 \usepackage[outputdir=build]{minted}
@@ -25,7 +25,7 @@
     \item Based on busybox and musl-libc.
     \item Can be used as a distribution and come with a grsec kernel.
   \end{itemize}
-  How can this helps me?
+  How can this help me?
   \begin{itemize}
     \item Easier to understand and deploy.
     \item Force you to invest time in your system, and production
@@ -44,7 +44,7 @@
     \item Replacement for the \textbf{glibc}, works most of the time.
     \item \textbf{\char`~600KB} vs \textbf{\char`~8MB} for complete .so set.
     \item Some softwares will not compile (I am looking at you \textbf{systemd}).
-  \item You can still install it, but this is crappy and not
+  \item You can still install it, but this is sketchy and not
       recommended outside a chroot (see the documentation).
   \end{itemize}
 \end{frame}
@@ -62,8 +62,14 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}
-    \LARGE APK!
+\begin{frame}{Alpine?}{apk}
+  \textbf{apk} is the tool used to install, upgrade, or delete software on a running alpine system.
+
+  \begin{itemize}
+    \item introduce some other dependencies: libcrypto, libssl, libz.
+    \item more convenient than a basic scratch image.
+    \item good tooling and documentation.
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{When not to use it}
@@ -72,73 +78,36 @@
       dependencies to not build.
     \item When building big images the small footprint is no longer an advantage
       (cross compiler can be really huge).
-    \item Package library is not exhaustive (10GB big),
+    \item Package library is not exhaustive (10GB big, for main and community),
       this is not a debian distribution,
       if a lot of dependencies are involved do not use it.
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Tooling}{}
+\begin{frame}[fragile]{Tooling}{tips and tricks!}
   \begin{itemize}
-    \item Busybox does not provide a package manager.
-    \item Debian repo is more than \textbf{200GB}, packaging is hard and can become messy.
-    \item We need simplicity and documentation, to create infrastructure.
-  \end{itemize}
-  Let's build a pipeline around this to speed up our workflow.
-  \flushright{\LARGE \textbf{It's all about tooling!}}
-\end{frame}
-
-
-\begin{frame}[fragile]{Tooling}{Build your binary}
-  virtual package switch:  \mintinline{shell}{apk add -t virtual} \\
-  build container \textbf{\char`~200MB}$\,\to\,$prod container
-  \textbf{\char`~11MB}
-
-  \begin{minted}{docker}
-FROM alpine:3.4
-RUN apk add --no-cache -t build-dependencies git... \
-  && git clone ... \
-  && go build -ldflags '-w -s' ... \
-  && apk del build-dependencies
-  \end{minted}
-\end{frame}
-
-\begin{frame}[fragile]{Tooling}{Build your mirror}
-
-  \begin{block}{Murphy's law}
-    Anything that can go wrong will go wrong.
-  \end{block}
-
-    \begin{itemize}
-      \item Small footprint (\char`~5GB)
-      \item Rapid builds, offline builds
-      \item Push your custom package
-  \end{itemize}
-
-  Also easy to setup, just rsync the http repo and serve it through darkhttpd!
-\end{frame}
-
-\begin{frame}[fragile]{Tooling}{Build your package}
-  Will you recompile your dependencies at the worst moment?
-  \flushright{\textbf{(no, you won't!)}}
-  \\
-  \begin{itemize}
-
-    \item Apline package description file is based on Gentoo Linux \textbf{ebuilds},
-      an easy way to package is to check Archlinux AUR for examples.
+    \item virtual package, remove dev dependencies easily\\
+      (golang containers can have size reduced from \textbf{\char`~200MB} to
+      \textbf{\char`~11MB})
+    \item create local mirror for packages (only \char`~5GB for the main repo),
+      allow rapid offline builds, push your custom packages.
+    \item custom packages Alpine package description file is based on Gentoo Linux
+      \textbf{ebuilds}, an easy way to package is to check Archlinux AUR for examples.
   \end{itemize}
 \end{frame}
 
-\begin{frame}[fragile]{Tooling}{Build your image}
+
+\begin{frame}[fragile]{Tooling}{tips and tricks!}
   \begin{itemize}
+\item Start your mirror server\\
+      \mintinline{shell}{docker run -p "8080:8080" alpine-mirror}
     \item Build your image \\ \mintinline{text}{docker build -t my-alpine:1.0 .}
       \begin{minted}{docker}
 FROM alpine:3.5
-RUN echo "http://${DOCKER_BRIDGE_IP}:8080" > "/etc/apk/repositories"
+RUN echo "http://bridge.ip:8080" > /etc/apk/repositories
 ADD repo-key.rsa.pub /etc/apk/keys
       \end{minted}
-    \item Start your mirror \\
-      \mintinline{shell}{docker run -p "8080:8080" alpine-mirror}
+
     \item Use your pipeline!
       \begin{minted}{docker}
 FROM my-alpine:1.0
@@ -158,17 +127,24 @@ RUN apk add --no-cache -t dependencies hello ...
   \quote{
     If you think "performance" is just CPU cycles, you're very wrong.
 	}{Linus Torvald}
+\begin{itemize}
+\item When building containers, think size, think network, think build time.
+\end{itemize}
+
   \quote{
     If all you have is a hammer, everything looks like a nail.
   }{Abraham Maslow}
-
   \begin{itemize}
-    \item When building containers, think size, think network, think build time.
-    \item You don't always need a full pipeline.
-    \item Before starting new tools, look at what already exists.
+    \item Be sure that you use the right tools for the right thing.
   \end{itemize}
+\end{frame}
 
-GITHUB!
+\begin{frame}{That's all folks}
+  \LARGE \textbf{Questions?}
+
+  \begin{flushright}
+    \normalsize \color{Green}IxDay\color{Grey}/mastering-alpine
+   \end{flushright}
 \end{frame}
 
 
